@@ -1,7 +1,7 @@
 # Ez-Blue - The Blue Zone Easy
 ## Ez-Blue-Services
 
-Ez-Blue-Services é um microserviço que gerencia informações de localização e tarifas de estacionamento no sistema de parquímetro.
+Ez-Blue-Services é um microserviço que gerência as informações de localização e tarifas de estacionamento no sistema de parquímetro.
 
 ## Intenção
 
@@ -19,7 +19,7 @@ O objetivo deste serviço é fornecer APIs para gerenciar localidades e tarifas 
 
 1. Clone o repositório:
 ```sh
-git clone <URL-DO-REPOSITORIO>
+git clone https://github.com/4ADJT/Ez-Blue-Services.git
 cd Ez-Blue-Services
 ```
 
@@ -37,8 +37,8 @@ docker build -t ez-blue-services .
 
 2. Execute o container:
 ```sh
-docker run -p 8761:8761 ez-blue-services
+docker run -p 8081:8081 ez-blue-services
 ```
 
 ## Configuração
-A configuração do Blue-Services pode ser encontrada no arquivo application.properties na pasta src/main/resources.
+A configuração do Ez-Blue-Services pode ser encontrada no arquivo application.properties na pasta src/main/resources.
