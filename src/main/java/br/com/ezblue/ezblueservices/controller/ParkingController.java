@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/ez-management/parking")
@@ -30,5 +31,9 @@ public class ParkingController {
         URI uri = componentsBuilder.path("/ez-management/parking/{parkingId}").buildAndExpand(registerParking).toUri();
         return ResponseEntity.created(uri).body(detailParking);
     }
-    
+
+    @GetMapping("/teste/{clientID}")
+    public ResponseEntity<String> teste(@PathVariable UUID clientID){
+        return ResponseEntity.ok(parkingService.exampleMethod(clientID));
+    }
 }

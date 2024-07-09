@@ -25,7 +25,7 @@ public class CityEntity {
     private String state;
     private String country;
 
-    @OneToOne(mappedBy = "'city'", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "city", cascade = CascadeType.ALL)
     private RateEntity rate;
 
     private LocalDateTime created_date;
