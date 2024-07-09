@@ -22,6 +22,7 @@ public class ParkingEntity {
     private UUID id;
 
     private UUID clientId;
+    private UUID vehicleId;
     private UUID cityId;
 
     private LocalDateTime startTime;
@@ -35,6 +36,15 @@ public class ParkingEntity {
         this.cityId = cityId;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.createdDate = LocalDateTime.now();
+        this.lastModifiedDate = LocalDateTime.now();
+    }
+
+    public ParkingEntity(RegisterParking registerParking) {
+        this.clientId = registerParking.clientId();
+        this.cityId = registerParking.cityId();
+        this.startTime = registerParking.startTime();
+        this.endTime = registerParking.endTime();
         this.createdDate = LocalDateTime.now();
         this.lastModifiedDate = LocalDateTime.now();
     }
