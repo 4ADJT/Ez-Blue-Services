@@ -52,8 +52,16 @@ public class CityRateController {
     }
 
     @PutMapping("/{cityId}/rate/{id}")
+    @Transactional
     @Operation(summary = "Atualiza tarifa da cidade", description = "Atualiza a tarifa de uma cidade especifica.")
     public ResponseEntity<DetailRate> updateCityRate(@PathVariable UUID cityId, @PathVariable UUID id, @RequestBody @Valid UpdateRate updateRate) {
         return ResponseEntity.ok(rateServices.updateCityRateById(cityId, id,updateRate));
+    }
+
+    @DeleteMapping()
+    @Transactional
+    public ResponseEntity deleteRate(@PathVariable UUID id) {
+        rateServices.deleteCityRateById(id);
+        return ResponseEntity.noContent().build();
     }
 }

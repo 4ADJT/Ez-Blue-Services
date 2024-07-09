@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,7 +19,7 @@ import java.util.UUID;
  * chamar no serviço Ez-Client-Services.
  * </p>
  */
-@FeignClient(name = "ez-client-services")
+@FeignClient(name = "EZ-CLIENT-SERVICES")
 public interface EzClientServiceOpenFeign {
 
     /**
@@ -31,7 +32,7 @@ public interface EzClientServiceOpenFeign {
      * @return Uma String contendo os detalhes do cliente.
      */
     @GetMapping("/client/{id}")
-    String getClientById(@PathVariable("id") UUID id);
+    Map<String, Object> getClientById(@PathVariable("id") UUID id);
 
 }
 

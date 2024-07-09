@@ -73,4 +73,8 @@ public class CityServices {
         }).orElseThrow(() -> new RuntimeException("Error: City Not Found"));
     }
 
+    public Double getRateByCityId(UUID uuid) {
+        return cityRepository.findById(uuid).map(cityEntity -> cityEntity.getRate().getRateValue())
+                .orElseThrow(() -> new RuntimeException("Error: City Not Found"));
+    }
 }

@@ -2,6 +2,7 @@ package br.com.ezblue.ezblueservices.domain.rate;
 
 import br.com.ezblue.ezblueservices.domain.city.CityServices;
 import jakarta.validation.Valid;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -108,4 +109,9 @@ public class RateServices {
         rateEntity.updateData(updateRate);
         return new DetailRate(rateEntity);
     }
+
+    public void deleteCityRateById(UUID id) {
+        throw new NotImplementedException("Pendente de implementação");
+    }
+
 }
