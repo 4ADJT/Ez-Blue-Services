@@ -14,16 +14,6 @@ public class ParkingComponet {
     @Autowired
     EzClientServiceOpenFeign ezClientServiceOpenFeign;
 
-    /**
-     * Método de exemplo para se comunicar com outro micro serviço.
-     *
-     * @param clientId Identificador único do cliente.
-     * @return String com os dados do cliente.
-     */
-    public Object exampleMethod(UUID clientId) {
-        return ezClientServiceOpenFeign.getClientById(clientId);
-    }
-
     public boolean validateClientVehicle(UUID clientId, UUID vehicleId) {
         var clientEntity = ezClientServiceOpenFeign.getClientById(clientId);
 
