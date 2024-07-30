@@ -49,7 +49,7 @@ public class ParkingComponent {
         String clientID = clientEntity.get("id").toString();
         Map<String, Object> json = new HashMap<>();
 
-        json.put("customerID", clientID);
+        json.put("customerId", clientID);
         json.put("type", payment.paymentType());
         json.put("value", rateValue);
 
