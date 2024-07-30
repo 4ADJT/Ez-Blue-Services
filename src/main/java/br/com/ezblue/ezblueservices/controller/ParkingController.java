@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -26,10 +27,10 @@ public class ParkingController {
     @PostMapping
     @Transactional
     @Operation(summary = "Registrar nova vaga", description = "registra um novo local onde um cliente estacionou")
-    public ResponseEntity<DetailParking> registerParking(@RequestBody RegisterParking registerParking, UriComponentsBuilder componentsBuilder) {
-        DetailParking detailParking = parkingService.register(registerParking);
+    public ResponseEntity<Map<String, Object>> registerParking(@RequestBody RegisterParking registerParking, UriComponentsBuilder componentsBuilder) {
+        var detailPayment = parkingService.register(registerParking);
         URI uri = componentsBuilder.path("/ez-management/parking/{parkingId}").buildAndExpand(registerParking).toUri();
-        return ResponseEntity.created(uri).body(detailParking);
+        return ResponseEntity.created(uri).body(detailPayment);
     }
 
     @GetMapping

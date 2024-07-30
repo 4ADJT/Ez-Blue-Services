@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -15,7 +16,7 @@ public class ParkingService {
     private ParkingRepository parkingRepository;
 
     @Autowired
-    ParkingComponet parkingComponet;
+    ParkingComponent parkingComponent;
 
     @Autowired
     CityServices cityServices;
@@ -26,17 +27,22 @@ public class ParkingService {
      * @param registerParking Objeto do formulário de cadastro do estacionamento.
      * @return DetailParking DetailRate Objeto contem todas as informações da tarifa.
      */
-    public DetailParking register(RegisterParking registerParking) {
+    public Map<String, Object> register(RegisterParking registerParking) {
 
-        var clientVehicleExists = parkingComponet.validateClientVehicle(registerParking.clientId(), registerParking.vehicleId());
+        var clientVehicleExists = parkingComponent.validateClientVehicle(registerParking.clientId(), registerParking.vehicleId());
 
         if (clientVehicleExists) {
 
+            if (!registerParking.payment().paymentType().equals("PIX") && !registerParking.payment().paymentType().equals("CARD"))
+                throw new RuntimeException("Payment type invalid");
+
             var rateValue = cityServices.getRateByCityId(registerParking.cityId());
 
-            var parkingEntity = new ParkingEntity(registerParking,rateValue);
+            var parkingEntity = new ParkingEntity(registerParking, rateValue);
             parkingRepository.save(parkingEntity);
-            return new DetailParking(parkingEntity);
+
+            return parkingComponent.paymentBoundaryService(registerParking.clientId(), registerParking.payment(), rateValue);
+
         } else {
             throw new RuntimeException("Client Id or Vehicle Id Not Valid");
         }
@@ -56,7 +62,7 @@ public class ParkingService {
     }
 
     /**
-     *  Método utilizado para retornar todas as instancias do objeto ParkingEntity na forma de DetailParking que pertencem ao @ClientId.
+     * Método utilizado para retornar todas as instancias do objeto ParkingEntity na forma de DetailParking que pertencem ao @ClientId.
      *
      * @param clientId - Id do cliente em que deseja retornar o estórico de estacionamento.
      * @return List<DetailParking> DetailParking Objeto contem todas as informações do estacionamento.
