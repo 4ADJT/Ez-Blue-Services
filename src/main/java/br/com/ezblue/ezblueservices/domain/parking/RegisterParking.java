@@ -1,5 +1,7 @@
 package br.com.ezblue.ezblueservices.domain.parking;
 
+import br.com.ezblue.ezblueservices.domain.payment.RegisterPayment;
+
 import java.util.UUID;
 
 /**
@@ -14,21 +16,9 @@ public record RegisterParking(
         UUID clientId,
         UUID vehicleId,
         UUID cityId,
-        long duration
+        long duration,
+        RegisterPayment payment
 ) {
 
-    /**
-     * Construtor que inicializa um objeto {@code RegisterParking} a partir de uma entidade {@code parkingEntity}.
-     *
-     * @param parkingEntity O objeto da entidade estacionamento que contém que contem todas suas informações
-     */
-    public RegisterParking(ParkingEntity parkingEntity) {
-        this(
-                parkingEntity.getClientId(),
-                parkingEntity.getVehicleId(),
-                parkingEntity.getCityId(),
-                parkingEntity.getDuration()
-        );
-    }
 
 }
