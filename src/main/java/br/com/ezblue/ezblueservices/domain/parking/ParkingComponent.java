@@ -6,6 +6,7 @@ import br.com.ezblue.ezblueservices.openfeign.EzClientServiceOpenFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +41,20 @@ public class ParkingComponent {
         return clientExists && veicileExists;
     }
 
-    public Map<String, Object> paymentBoundaryService(UUID uuid, RegisterPayment payment, Double rateValue) {
-        return ezBoundaryServiceOpenFeign.createPayment(paymentObject(uuid, payment, rateValue));
+    public Map<String, Object> boundaryService(DetailParking detailParking, RegisterParking registerParking, Double rateValue) {
+        String clientEmail = getClientById(registerParking.clientId()).get("email").toString();
+        notificationBoundaryService(detailParking, registerParking, clientEmail);
+        return paymentBoundaryService(detailParking, registerParking, rateValue);
+    }
+
+    private Map<String, Object> paymentBoundaryService(DetailParking detailParking, RegisterParking registerParking, Double rateValue) {
+        return ezBoundaryServiceOpenFeign.createPayment(
+                paymentObject(
+                        detailParking.clientId(),
+                        registerParking.payment(),
+                        rateValue
+                )
+        );
     }
 
     private Map<String, Object> paymentObject(UUID uuid, RegisterPayment payment, Double rateValue) {
@@ -55,7 +68,8 @@ public class ParkingComponent {
 
         if (payment.paymentType().equals("PIX")) {
             Map<String, Object> map = new HashMap<>();
-            json.put("pix", map.put("key", payment.key()));
+            map.put("key", payment.key());
+            json.put("pix", map);
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("type", payment.cardType());
@@ -67,5 +81,26 @@ public class ParkingComponent {
         return json;
     }
 
+    private void notificationBoundaryService(DetailParking detailParking, RegisterParking registerParking, String clientEmail) {
+        ezBoundaryServiceOpenFeign.createNotification(
+                notificationObject(
+                        detailParking,
+                        registerParking,
+                        clientEmail
+                )
+        );
+    }
+
+    private Map<String, Object> notificationObject(DetailParking detailParking, RegisterParking registerParking, String clientEmail) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("title", "Atenção!");
+        map.put("message", "Fique esperto, sua ticket venceu!");
+        map.put("parkingId", detailParking.id());
+        map.put("email", clientEmail);
+        map.put("duration", registerParking.duration());
+        map.put("expirationTime", LocalDateTime.now().plusMinutes(registerParking.duration()));
+
+        return map;
+    }
 
 }
