@@ -41,7 +41,7 @@ public class ParkingService {
             var parkingEntity = new ParkingEntity(registerParking, rateValue);
             parkingRepository.save(parkingEntity);
 
-            return parkingComponent.paymentBoundaryService(registerParking.clientId(), registerParking.payment(), rateValue);
+            return parkingComponent.boundaryService(new DetailParking(parkingEntity), registerParking, rateValue);
 
         } else {
             throw new RuntimeException("Client Id or Vehicle Id Not Valid");
