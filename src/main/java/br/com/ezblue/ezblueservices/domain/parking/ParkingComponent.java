@@ -68,7 +68,8 @@ public class ParkingComponent {
 
         if (payment.paymentType().equals("PIX")) {
             Map<String, Object> map = new HashMap<>();
-            json.put("pix", map.put("key", payment.key()));
+            map.put("key", payment.key());
+            json.put("pix", map);
         } else {
             Map<String, Object> map = new HashMap<>();
             map.put("type", payment.cardType());
